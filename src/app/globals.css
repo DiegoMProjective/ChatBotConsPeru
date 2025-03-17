@@ -4,14 +4,14 @@
 
 /* 🎨 Paleta de colores elegante */
 :root {
-  --background: #fdfdfd; /* Blanco puro */
-  --foreground: #1e3b22; /* Azul grisáceo oscuro */
+  --background: transparent; /* Blanco puro */
+  --foreground: #ffffff00; /* Azul grisáceo oscuro */
   --accent: #e54646; /* Azul intenso */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #122a10;
+    --background: transparent;
     --foreground: #ffffff;
     --accent: #f88181;
   }
