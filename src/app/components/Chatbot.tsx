@@ -47,7 +47,7 @@ export default function Chatbot() {
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
 
-      let botMessage: Message = { text: "", isUser: false };
+      const botMessage: Message = { text: "", isUser: false };
 
       setMessages((prev) => [...prev, botMessage]);
 
