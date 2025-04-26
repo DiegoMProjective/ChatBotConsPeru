@@ -1,7 +1,10 @@
 export async function POST(req: Request) {
     const { prompt } = await req.json();
   
-    const res = await fetch("http://localhost:11434/api/generate", {
+    const LOCALHOST = "http://localhost:8000/api/generate;"
+    const VPN = "http://<IP-LOCAL-DEL-POD>:8000/api/generate";
+
+    const res = await fetch(VPN, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

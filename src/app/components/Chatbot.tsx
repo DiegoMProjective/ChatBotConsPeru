@@ -1,11 +1,8 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import { Send, Loader2, MessageCircle } from "lucide-react";
+import { Message } from "../types/Message";
 
-interface Message {
-  text: string;
-  isUser: boolean;
-}
 
 export default function Chatbot() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -13,6 +10,8 @@ export default function Chatbot() {
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const [quemados, setQuemados] = useState<Message[]>([]);
 
   useEffect(() => {
     if (messages.length === 0) return;
@@ -84,34 +83,40 @@ export default function Chatbot() {
   };
 
   return (
-    <div className="fixed bottom-4 right-4 flex flex-col items-end">
+    <div className="fixed bottom-4 right-4 flex flex-col items-end z-50">
       <button
-        className="p-4 bg-red-600 text-white rounded-full shadow-lg hover:bg-red-700 transition-all"
+        style={{ backgroundColor: '#C5172E' }}
+        className="p-4  text-white rounded-full shadow-lg hover:bg-red-700 transition-all"
         onClick={() => setIsOpen(!isOpen)}
       >
         <MessageCircle className="h-6 w-6" />
       </button>
 
-      <div
+      {/* <div
         className={`fixed bottom-20 right-20 w-80 bg-white shadow-lg rounded-lg flex flex-col transition-all duration-300 ${
           isOpen ? "opacity-100 scale-100" : "opacity-0 scale-90 pointer-events-none"
         }`}
+      > */}
+      <div
+        className={`fixed bottom-20 right-20 w-80 bg-white/30 backdrop-blur-sm shadow-lg rounded-lg flex flex-col transition-all duration-300 ${isOpen ? "opacity-100 scale-100" : "opacity-0 scale-90 pointer-events-none"
+          }`}
       >
-        <div className="chat-title p-4 bg-red-500 text-white font-bold rounded-t-lg">
-          Asistente Virtual Consulado Peruano
-        </div>
 
-        <div className="messages-container flex flex-col flex-1 overflow-y-auto p-2 space-y-2 h-60">
+        {/* <div className="backdrop-blur-sm chat-title p-4 text-white font-bold rounded-t-lg">
+          Asistente Virtual Consulado Peruano
+        </div> */}
+
+        <div className="messages-container flex flex-col flex-1 overflow-y-auto p-2 space-y-2"
+          style={{ height: '500px' }}>
           {messages.map((msg, index) => (
             <div
               key={index}
-              className={`chat-text max-w-[80%] px-4 py-2 rounded-lg ${
-                msg.isUser
-                  ? "bg-red-500 text-white self-end text-right"
-                  : "bg-gray-200 text-gray-900 self-start text-left"
-              }`}
+              className={`chat-text max-w-[80%] px-4 py-2 rounded-lg ${msg.isUser
+                ? "bg-gray-200/80 backdrop-blur-sm text-gray-800 self-end text-right"
+                : "bg-[#FED4D4]/80 backdrop-blur-sm text-gray-900 self-start text-left"
+                }`}
             >
-              {msg.text}
+              {msg.isUser ?  msg.text : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras erat ligula, egestas eu erat nec, aliquam sollicitudin sapien. Maecenas turpis augue, laoreet eget gravida non, viverra et augue. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam vitae posuere urna. Vivamus viverra vehicula pretium. Nunc at justo urna. Sed consectetur congue lobortis. Aliquam erat volutpat."}
             </div>
           ))}
           {loading && (
@@ -123,17 +128,17 @@ export default function Chatbot() {
           <div ref={messagesEndRef} />
         </div>
 
-        <div className="input-container flex items-center border-t p-2 bg-gray-100 rounded-b-lg">
+        <div className="input-container flex items-center p-2 bg-transparent ">
           <input
             type="text"
-            className="flex-1 p-2 border rounded-md text-gray-900"
+            // className="flex-1 p-0 m-0 text-gray-700 placeholder-gray-400 bg-transparent border-none outline-none"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-            placeholder="Escribe un mensaje..."
+            placeholder="Preguntame algo..."
           />
           <button
-            className="ml-2 bg-red-500 text-white p-3 rounded-lg hover:bg-red-600 transition"
+            // className="ml-2 text-white p-3 rounded-lg transition bg-transparent border-none outline-none"
             onClick={sendMessage}
             disabled={loading}
           >

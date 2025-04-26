@@ -6,7 +6,7 @@
 :root {
   --background: transparent; /* Blanco puro */
   --foreground: #ffffff00; /* Azul grisáceo oscuro */
-  --accent: #e54646; /* Azul intenso */
+  --accent: #e54646; /* RED */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -68,7 +68,7 @@ body {
   padding: 12px 18px;
   margin: 10px 0;
   border-radius: 12px;
-  font-size: 17px;
+  font-size: 11px;
   font-family: "Nunito Sans", sans-serif;
   word-wrap: break-word;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.08);
@@ -77,7 +77,7 @@ body {
 /* 💬 Estilo del texto dentro del chat */
 .chat-text {
   font-family: "Nunito Sans", sans-serif ;
-  font-size: 16px;
+  font-size: 11px;
   line-height: 1.6;  /* Espaciado cómodo para lectura */
 }
 /* 📩 Mensajes de usuario */
@@ -135,6 +135,7 @@ body {
   align-items: center;
   border-top: 1px solid #ddd;
   padding: 10px;
+  color:#000;
   background: #f9fafb;
   border-radius: 0 0 15px 15px;
 }
@@ -143,36 +144,36 @@ body {
   flex: 1;
   padding: 12px;
   border-radius: 8px;
-  border: 1px solid #ccc;
+  border: none;
   outline: none;
   transition: all 0.3s ease;
-  font-size: 16px;
+  font-size: 11px;
   font-family: "Lora", serif;
 }
 
 .input-container input:focus {
   border-color: var(--accent);
-  box-shadow: 0px 0px 8px rgba(128, 229, 70, 0.5);
+  /* box-shadow: 0px 0px 8px rgba(128, 229, 70, 0.5); */
 }
 
 /* 📤 Botón con hover elegante */
 .input-container button {
-  background: var(--accent);
-  color: white;
+  /* background: var(--accent); */
+  color: #000;
   padding: 12px 16px;
   border-radius: 8px;
   margin-left: 10px;
   transition: all 0.3s ease;
-  font-size: 16px;
+  font-size: 11px;
 }
 
-.input-container button:hover {
-  background: #941d14;
-}
+/* .input-container button:hover {
+  background: none;
+} */
 /* 📢 Estilo para el título principal */
 .chat-title {
   font-family: "Poppins", sans-serif;
-  font-size: 20px;
+  font-size: 14px;
   font-weight: 600;
   text-align: center;
   color:#fdcaca;

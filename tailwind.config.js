@@ -11,7 +11,8 @@ module.exports = {
         serif: ["Merriweather", "serif"], // O cualquier otra fuente elegante
       },
       colors: {
-        primary: "#0f172a", // Azul oscuro más elegante
+        primary: "#0f172a",
+        uvared: '#C5172E', 
       },
     },
   },
