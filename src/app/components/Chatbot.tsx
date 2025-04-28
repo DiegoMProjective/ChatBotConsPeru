@@ -1,6 +1,6 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
-import { Send, Loader2, MessageCircle } from "lucide-react";
+import { Send, Loader2 } from "lucide-react";
 import { Message } from "../types/Message";
 
 type Info = {
@@ -14,7 +14,6 @@ export default function Chatbot({ info }: { info: Info }) {
   const [messages, setMessages] = useState<Message[]>([{ text: 'Hola soy Nayra tu asistente virtual, te apoyaré con las dudas que tengas acerca del proceso de pasaportes y demás.', isUser: false }]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isOpen, setIsOpen] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -93,67 +92,53 @@ export default function Chatbot({ info }: { info: Info }) {
   };
 
   return (
-    <div className="fixed bottom-4 right-4 flex flex-col items-end z-50">
-      <button
-        style={{ backgroundColor: '#C5172E' }}
-        className="p-4  text-white rounded-full shadow-lg hover:bg-red-700 transition-all"
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <MessageCircle className="h-6 w-6" />
-      </button>
+    <div className="flex flex-col h-full w-full shadow-lg rounded-lg overflow-hidden">
 
-      <div
-        className={`fixed bottom-20 right-20 w-80 bg-white/30 backdrop-blur-sm shadow-lg rounded-lg flex flex-col transition-all duration-300 ${isOpen ? "opacity-100 scale-100" : "opacity-0 scale-90 pointer-events-none"
-          }`}
-      >
-
-        <div className="messages-container flex flex-col flex-1 overflow-y-auto p-2 space-y-2"
-          style={{ height: '500px' }}>
-          {messages.map((msg, index) => (
-            <>
-              <div className={msg.isUser
-                ? "self-end text-right"
-                : "self-start text-left"
-              }>
-                <label className="block text-gray-700 text-sm font-bold mb-2 capitalize">
-                  {(msg.isUser) ? `${info?.name} ${info?.lastname}` : 'Nayra'}
-                </label>
-              </div>
-              <div
-                key={index}
-                className={`chat-text max-w-[80%] px-4 py-2 rounded-lg ${msg.isUser
-                  ? "bg-gray-200/80 backdrop-blur-sm text-gray-800 self-end text-right"
-                  : "bg-[#FED4D4]/80 backdrop-blur-sm text-gray-900 self-start text-left"
-                  }`}
-              >
-                {msg.text}
-              </div>
-            </>
-          ))}
-          {loading && (
-            <div className="loading-container flex items-center">
-              <Loader2 className="animate-spin h-6 w-6 text-red-500" />
-              <span className="ml-2 text-gray-500">Escribiendo...</span>
+      {/* Mensajes */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        {messages.map((msg, index) => (
+          <div key={index} className={`flex ${msg.isUser ? "justify-end" : "justify-start"}`}>
+            <div className={`max-w-[70%] px-4 py-2 rounded-2xl text-sm
+              ${msg.isUser
+                ? "bg-gray-200 text-gray-800"
+                : "bg-[#FED4D4] text-gray-900"
+              }`}>
+              <p className="font-semibold mb-1">
+                {msg.isUser ? `${info?.name} ${info?.lastname}` : "Nayra"}
+              </p>
+              <p>{msg.text}</p>
             </div>
-          )}
-          <div ref={messagesEndRef} />
-        </div>
-
-        <div className="input-container flex items-center p-2 bg-transparent ">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-          />
-          <button
-            onClick={sendMessage}
-            disabled={loading}
-          >
-            <Send className="h-5 w-5" />
-          </button>
-        </div>
+          </div>
+        ))}
+        {loading && (
+          <div className="flex justify-start">
+            <div className="flex items-center space-x-2 text-gray-500">
+              <Loader2 className="animate-spin h-5 w-5" />
+              <span>Escribiendo...</span>
+            </div>
+          </div>
+        )}
+        <div ref={messagesEndRef} />
       </div>
-    </div>
-  );
+
+      {/* Input */}
+      <div className="p-3 border-t border-gray-300 bg-white/70 flex items-center space-x-2">
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+          className="flex-1 bg-transparent outline-none text-black placeholder-gray-400"
+          placeholder="Escribe tu mensaje..."
+        />
+        <button
+          onClick={sendMessage}
+          disabled={loading}
+          className="text-red-500 hover:text-red-600"
+        >
+          <Send className="h-5 w-5" />
+        </button>
+      </div>
+
+    </div>);
 }
