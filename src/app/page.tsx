@@ -1,6 +1,5 @@
-import Chatbot from "./components/Chatbot";
-
 import React from "react";
+import StepperChat from './components/StepperChat';
 
 const ConsuladoMockup = () => {
   return (
@@ -19,7 +18,9 @@ const ConsuladoMockup = () => {
       
       {/* Main Content */}
       <main className="container mx-auto py-10 px-6">
-      <Chatbot />
+      {/* <Chatbot />
+       */}
+       <StepperChat />
         <section className="bg-white p-6 rounded-xl shadow-md">
           <h2 className="text-xl font-semibold text-gray-800">Bienvenido al Consulado General del Perú</h2>
           <p className="mt-2 text-gray-600">

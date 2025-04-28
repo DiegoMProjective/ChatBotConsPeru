@@ -3,15 +3,19 @@ import { useState, useRef, useEffect } from "react";
 import { Send, Loader2, MessageCircle } from "lucide-react";
 import { Message } from "../types/Message";
 
+type Info = {
+  name: string;
+  email: string;
+  lastname: string;
+};
 
-export default function Chatbot() {
-  const [messages, setMessages] = useState<Message[]>([]);
+
+export default function Chatbot({ info }: { info: Info }) {
+  const [messages, setMessages] = useState<Message[]>([{ text: 'Hola soy Nayra tu asistente virtual, te apoyaré con las dudas que tengas acerca del proceso de pasaportes y demás.', isUser: false }]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  const [quemados, setQuemados] = useState<Message[]>([]);
 
   useEffect(() => {
     if (messages.length === 0) return;
@@ -23,6 +27,7 @@ export default function Chatbot() {
     }
   }, [messages.length]);
 
+
   const sendMessage = async () => {
     if (!input.trim()) return;
 
@@ -31,8 +36,11 @@ export default function Chatbot() {
     setInput("");
     setLoading(true);
 
+    const BASE_URL = "https://3575-194-68-245-86.ngrok-free.app"
+    const NGROK = BASE_URL + '/api/generate';
+
     try {
-      const res = await fetch("/api/chat", {
+      const res = await fetch(NGROK, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt: input }),
@@ -50,21 +58,28 @@ export default function Chatbot() {
 
       setMessages((prev) => [...prev, botMessage]);
 
+      let complete_sentence = '';
+
       while (true) {
         const { value, done } = await reader.read();
         if (done) break;
 
         const chunk = decoder.decode(value, { stream: true });
-        const lines = chunk.split("\n").filter((line) => line.trim() !== "");
 
+        complete_sentence += chunk;
+
+        console.log("uvalda: ", chunk);
+
+        const lines = chunk.split("\n").filter((line) => line.trim() !== "");
         for (const line of lines) {
           try {
-            const data = JSON.parse(line);
-            if (data.response) {
+
+            const data = line;
+            if (data) {
               setMessages((prev) => {
                 return prev.map((msg, index) => {
                   if (index === prev.length - 1 && !msg.isUser) {
-                    return { ...msg, text: msg.text + data.response };
+                    return { ...msg, text: msg.text + data };
                   }
                   return msg;
                 });
@@ -109,15 +124,25 @@ export default function Chatbot() {
         <div className="messages-container flex flex-col flex-1 overflow-y-auto p-2 space-y-2"
           style={{ height: '500px' }}>
           {messages.map((msg, index) => (
-            <div
-              key={index}
-              className={`chat-text max-w-[80%] px-4 py-2 rounded-lg ${msg.isUser
-                ? "bg-gray-200/80 backdrop-blur-sm text-gray-800 self-end text-right"
-                : "bg-[#FED4D4]/80 backdrop-blur-sm text-gray-900 self-start text-left"
-                }`}
-            >
-              {msg.isUser ?  msg.text : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras erat ligula, egestas eu erat nec, aliquam sollicitudin sapien. Maecenas turpis augue, laoreet eget gravida non, viverra et augue. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam vitae posuere urna. Vivamus viverra vehicula pretium. Nunc at justo urna. Sed consectetur congue lobortis. Aliquam erat volutpat."}
-            </div>
+            <>
+              <div className={msg.isUser
+                ? "self-end text-right"
+                : "self-start text-left"
+              }>
+                <label className="block text-gray-700 text-sm font-bold mb-2 capitalize">
+                  {(msg.isUser) ? `${info?.name} ${info?.lastname}` : 'Nayra'}
+                </label>
+              </div>
+              <div
+                key={index}
+                className={`chat-text max-w-[80%] px-4 py-2 rounded-lg ${msg.isUser
+                  ? "bg-gray-200/80 backdrop-blur-sm text-gray-800 self-end text-right"
+                  : "bg-[#FED4D4]/80 backdrop-blur-sm text-gray-900 self-start text-left"
+                  }`}
+              >
+                {msg.text}
+              </div>
+            </>
           ))}
           {loading && (
             <div className="loading-container flex items-center">
@@ -135,7 +160,6 @@ export default function Chatbot() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-            placeholder="Preguntame algo..."
           />
           <button
             // className="ml-2 text-white p-3 rounded-lg transition bg-transparent border-none outline-none"
