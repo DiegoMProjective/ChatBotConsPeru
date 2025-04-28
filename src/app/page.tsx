@@ -4,7 +4,6 @@ import StepperChat from './components/StepperChat';
 const ConsuladoMockup = () => {
   return (
     <div className="min-h-screen bg-gray-100">
-      {/* Header */}
       <header className="bg-red-700 text-white py-4 px-6 flex justify-between items-center shadow-lg">
         <h1 className="text-2xl font-bold">Consulado General del Perú</h1>
         <nav>

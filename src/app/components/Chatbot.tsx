@@ -107,19 +107,10 @@ export default function Chatbot({ info }: { info: Info }) {
         <MessageCircle className="h-6 w-6" />
       </button>
 
-      {/* <div
-        className={`fixed bottom-20 right-20 w-80 bg-white shadow-lg rounded-lg flex flex-col transition-all duration-300 ${
-          isOpen ? "opacity-100 scale-100" : "opacity-0 scale-90 pointer-events-none"
-        }`}
-      > */}
       <div
         className={`fixed bottom-20 right-20 w-80 bg-white/30 backdrop-blur-sm shadow-lg rounded-lg flex flex-col transition-all duration-300 ${isOpen ? "opacity-100 scale-100" : "opacity-0 scale-90 pointer-events-none"
           }`}
       >
-
-        {/* <div className="backdrop-blur-sm chat-title p-4 text-white font-bold rounded-t-lg">
-          Asistente Virtual Consulado Peruano
-        </div> */}
 
         <div className="messages-container flex flex-col flex-1 overflow-y-auto p-2 space-y-2"
           style={{ height: '500px' }}>
@@ -156,13 +147,11 @@ export default function Chatbot({ info }: { info: Info }) {
         <div className="input-container flex items-center p-2 bg-transparent ">
           <input
             type="text"
-            // className="flex-1 p-0 m-0 text-gray-700 placeholder-gray-400 bg-transparent border-none outline-none"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && sendMessage()}
           />
           <button
-            // className="ml-2 text-white p-3 rounded-lg transition bg-transparent border-none outline-none"
             onClick={sendMessage}
             disabled={loading}
           >

@@ -6,8 +6,6 @@ import { MessageSquareMore } from "lucide-react";
 export default function StepperChat() {
   const [step, setStep] = useState(0);
 
-  const [isMinimized, setIsMinimized] = useState(false); 
-
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -36,7 +34,7 @@ export default function StepperChat() {
         </div>
       )}
 
-      {step === 1 && !isMinimized && (
+      {step === 1 && (
         <div className="w-80 p-6 bg-white/30 backdrop-blur-sm shadow-lg rounded-lg flex flex-col space-y-4 text-wrap flex items-center text-center">
           <h2 className="text-xl font-semibold text-gray-700 text-center standard-text">Tu asistente consular 24/7</h2>
 
