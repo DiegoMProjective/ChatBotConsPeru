@@ -25,7 +25,7 @@ export default function Chatbot({ info }: { info: Info }) {
     if (lastMessage?.isUser) {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages.length]);
+  }, [messages]);
 
 
   const sendMessage = async () => {
