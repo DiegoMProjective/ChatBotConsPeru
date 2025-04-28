@@ -58,17 +58,12 @@ export default function Chatbot({ info }: { info: Info }) {
 
       setMessages((prev) => [...prev, botMessage]);
 
-      let complete_sentence = '';
 
       while (true) {
         const { value, done } = await reader.read();
         if (done) break;
 
         const chunk = decoder.decode(value, { stream: true });
-
-        complete_sentence += chunk;
-
-        console.log("uvalda: ", chunk);
 
         const lines = chunk.split("\n").filter((line) => line.trim() !== "");
         for (const line of lines) {
