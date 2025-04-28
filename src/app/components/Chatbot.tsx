@@ -36,7 +36,7 @@ export default function Chatbot({ info }: { info: Info }) {
     setInput("");
     setLoading(true);
 
-    const BASE_URL = "https://3575-194-68-245-86.ngrok-free.app"
+    const BASE_URL = "https://31b6-194-68-245-86.ngrok-free.app"
     const NGROK = BASE_URL + '/api/generate';
 
     try {

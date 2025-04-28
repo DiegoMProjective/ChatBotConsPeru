@@ -1,14 +1,12 @@
 export async function POST(req: Request) {
   const { prompt } = await req.json();
 
-  const NGROK = "https://6735-194-68-245-86.ngrok-free.app";
   const res = await fetch("https://6735-194-68-245-86.ngrok-free.app", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ prompt }),
   });
 
-  console.log("RESPONSE:", res)
 
   if (!res.body) {
     return new Response("Error: No se recibió un body en la respuesta", { status: 500 });
