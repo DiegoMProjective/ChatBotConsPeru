@@ -17,7 +17,6 @@ const ConsuladoMockup = () => {
 
       {/* Capa superior: chatbot */}
       <div className="absolute bottom-6 right-6 z-50">
-        <Chatbot/>
       </div>
 
       {/* Capa invisible encima para evitar interacción directa con el iframe (opcional) */}
