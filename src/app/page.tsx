@@ -11,7 +11,7 @@ const ConsuladoMockup = () => {
           src="https://www.consulado.pe/es/LosAngeles/Paginas/Inicio.aspx"
           className="w-full h-full border-none"
         />
-      </div>
+      
 
       {/* Capa superior: chatbot */}
       <StepperChat />
@@ -21,7 +21,7 @@ const ConsuladoMockup = () => {
             Aquí puedes realizar tus trámites consulares de manera rápida y eficiente. Utiliza nuestro asistente virtual para obtener información sobre pasaportes, visas y otros servicios.
           </p>
         </section>
-      </div>
+      
 
       {/* Capa invisible encima para evitar interacción directa con el iframe (opcional) */}
       {/* <div className="absolute inset-0 z-40 pointer-events-none"></div> */}
