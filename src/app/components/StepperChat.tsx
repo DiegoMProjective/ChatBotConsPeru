@@ -30,7 +30,7 @@ export default function StepperChat() {
   };
 
   return (
-    <div className="fixed bottom-4 right-4 w-80 bg-white/10 backdrop-blur-md rounded-lg shadow-lg overflow-hidden z-50 border border-white">
+    <div className="fixed bottom-4 right-4 w-80 bg-white/50 backdrop-blur-md rounded-lg shadow-lg overflow-hidden z-50 border border-white">
 
       <div className="flex justify-between items-center p-3 bg-white/10  backdrop-blur-md shadow-lg text-black cursor-pointer" onClick={step === 0 ? handleStart : toggleMinimize}>
         <span className="font-bold text-sm">Asistente Consular 24/7</span>
