@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import StepperChat from './components/StepperChat';
 
 const ConsuladoMockup = () => {
   return (
@@ -13,7 +14,13 @@ const ConsuladoMockup = () => {
       </div>
 
       {/* Capa superior: chatbot */}
-      <div className="absolute bottom-6 right-6 z-50">
+      <StepperChat />
+        <section className="bg-white p-6 rounded-xl shadow-md">
+          <h2 className="text-xl font-semibold text-gray-800">Bienvenido al Consulado General del Perú</h2>
+          <p className="mt-2 text-gray-600">
+            Aquí puedes realizar tus trámites consulares de manera rápida y eficiente. Utiliza nuestro asistente virtual para obtener información sobre pasaportes, visas y otros servicios.
+          </p>
+        </section>
       </div>
 
       {/* Capa invisible encima para evitar interacción directa con el iframe (opcional) */}
