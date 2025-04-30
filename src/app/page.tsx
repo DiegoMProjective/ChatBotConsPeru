@@ -18,12 +18,6 @@ const ConsuladoMockup = () => {
       {/* <Chatbot />
        */}
        <StepperChat />
-        <section className="bg-white p-6 rounded-xl shadow-md">
-          <h2 className="text-xl font-semibold text-gray-800">Bienvenido al Consulado General del Perú</h2>
-          <p className="mt-2 text-gray-600">
-            Aquí puedes realizar tus trámites consulares de manera rápida y eficiente. Utiliza nuestro asistente virtual para obtener información sobre pasaportes, visas y otros servicios.
-          </p>
-        </section>
 
         {/* Chatbot Section */}
         <section className="mt-6">
