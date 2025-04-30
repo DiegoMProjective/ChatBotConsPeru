@@ -2,6 +2,13 @@
 import React from "react";
 import Chatbot from "./components/Chatbot";
 
+// Objeto 'info' que cumple con el tipo requerido por el Chatbot
+const dummyInfo = {
+  name: "Juan",
+  lastname: "Pérez",
+  email: "juan.perez@example.com",
+};
+
 const ConsuladoMockup = () => {
   return (
     <div className="relative min-h-screen">
@@ -11,9 +18,9 @@ const ConsuladoMockup = () => {
         className="w-full h-screen border-none"
       />
 
-      {/* Chatbot flotante arriba del iframe */}
+      {/* Chatbot flotante sobre el sitio */}
       <div className="absolute bottom-6 right-6 z-50">
-        <Chatbot />
+        <Chatbot info={dummyInfo} />
       </div>
     </div>
   );
