@@ -21,11 +21,7 @@ const ConsuladoMockup = () => {
 
         {/* Chatbot Section */}
         <section className="mt-6">
-          <div className="bg-white p-6 rounded-xl shadow-md relative">
-            <h3 className="text-lg font-semibold text-gray-800">Asistente Virtual</h3>
-            <p className="text-gray-600">Pregunta sobre trámites y obtén respuestas al instante.</p>
-
-          </div>
+          
         </section>
       </main>
       
