@@ -11,8 +11,9 @@ const ConsuladoMockup = () => {
           src="https://www.consulado.pe/es/LosAngeles/Paginas/Inicio.aspx"
           className="w-full h-full border-none"
         />
+      </div>
       
- {/* Main Content */}
+      {/* Main Content */}
       <main className="container mx-auto py-10 px-6">
       {/* <Chatbot />
        */}
