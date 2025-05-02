@@ -9,12 +9,13 @@ type Info = {
   lastname: string;
 };
 
-
 export default function Chatbot({ info }: { info: Info }) {
   const [messages, setMessages] = useState<Message[]>([{ text: 'Hola soy Nayra tu asistente virtual, te apoyaré con las dudas que tengas acerca del proceso de pasaportes y demás.', isUser: false }]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const MAX_HISTORY_LENGTH = 10; // Limitar a los últimos 10 mensajes
 
   useEffect(() => {
     if (messages.length === 0) return;
@@ -26,7 +27,6 @@ export default function Chatbot({ info }: { info: Info }) {
     }
   }, [messages]);
 
-
   const sendMessage = async () => {
     if (!input.trim()) return;
 
@@ -35,6 +35,15 @@ export default function Chatbot({ info }: { info: Info }) {
     setInput("");
     setLoading(true);
 
+    // Recortar el historial de mensajes si excede el límite
+    const limitedMessages = messages.slice(-MAX_HISTORY_LENGTH);
+
+    // Preparar el historial recortado para enviar a la IA
+    const conversationHistory = limitedMessages.map((msg) => `${msg.isUser ? "Usuario" : "Nayra"}: ${msg.text}`).join("\n");
+
+    // Agregar el nuevo mensaje al historial para enviarlo a la IA
+    const completePrompt = `${conversationHistory}\nUsuario: ${input}\nNayra:`;
+
     //const BASE_URL = "http://localhost:8000"
     const NGROK = '/api/generate';
 
@@ -42,7 +51,7 @@ export default function Chatbot({ info }: { info: Info }) {
       const res = await fetch(NGROK, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: input }),
+        body: JSON.stringify({ prompt: completePrompt }),
       });
 
       if (!res.body) {
@@ -57,7 +66,6 @@ export default function Chatbot({ info }: { info: Info }) {
 
       setMessages((prev) => [...prev, botMessage]);
 
-
       while (true) {
         const { value, done } = await reader.read();
         if (done) break;
@@ -67,7 +75,6 @@ export default function Chatbot({ info }: { info: Info }) {
         const lines = chunk.split("\n").filter((line) => line.trim() !== "");
         for (const line of lines) {
           try {
-
             const data = line;
             if (data) {
               setMessages((prev) => {
@@ -140,5 +147,6 @@ export default function Chatbot({ info }: { info: Info }) {
         </button>
       </div>
 
-    </div>);
+    </div>
+  );
 }
