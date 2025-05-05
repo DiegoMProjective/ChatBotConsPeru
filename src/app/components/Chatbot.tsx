@@ -29,59 +29,53 @@ export default function Chatbot({ info }: { info: Info }) {
 
   const sendMessage = async () => {
     if (!input.trim()) return;
-
+  
     const userMessage = { text: input, isUser: true };
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setLoading(true);
-
-    //const BASE_URL = "http://localhost:8000"
-    const NGROK = '/api/generate';
-
+  
+    const NGROK = "/api/generate";
+  
+    const rawHistory = messages.slice(-4); // últimos 4 turnos (usuario + IA)
+    const history = rawHistory
+      .filter((msg) => msg.text && msg.text.trim() !== "")
+      .map((msg) => msg.text);
+  
     try {
       const res = await fetch(NGROK, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: input }),
+        body: JSON.stringify({ prompt: input, history }),
       });
-
+  
       if (!res.body) {
         console.error("No se recibió un body en la respuesta.");
         return;
       }
-
+  
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
-
+  
       const botMessage: Message = { text: "", isUser: false };
-
       setMessages((prev) => [...prev, botMessage]);
-
-
+  
       while (true) {
         const { value, done } = await reader.read();
         if (done) break;
-
+  
         const chunk = decoder.decode(value, { stream: true });
-
         const lines = chunk.split("\n").filter((line) => line.trim() !== "");
+  
         for (const line of lines) {
-          try {
-
-            const data = line;
-            if (data) {
-              setMessages((prev) => {
-                return prev.map((msg, index) => {
-                  if (index === prev.length - 1 && !msg.isUser) {
-                    return { ...msg, text: msg.text + data };
-                  }
-                  return msg;
-                });
-              });
-            }
-          } catch (err) {
-            console.error("Error procesando JSON:", err);
-          }
+          setMessages((prev) => {
+            return prev.map((msg, index) => {
+              if (index === prev.length - 1 && !msg.isUser) {
+                return { ...msg, text: msg.text + line };
+              }
+              return msg;
+            });
+          });
         }
       }
     } catch (error) {
@@ -90,6 +84,7 @@ export default function Chatbot({ info }: { info: Info }) {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="flex flex-col h-full w-full shadow-lg rounded-lg overflow-hidden">
