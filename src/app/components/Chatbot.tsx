@@ -2,25 +2,20 @@
 import { useState, useRef, useEffect } from "react";
 import { Send, Loader2 } from "lucide-react";
 import { Message } from "../types/Message";
-
-type Info = {
-  name: string;
-  email: string;
-  lastname: string;
-};
-
+import { Info } from "../types/info";
+import { PromptEnum } from "../enums/prompt-enum";
 
 export default function Chatbot({ info }: { info: Info }) {
-  const [messages, setMessages] = useState<Message[]>([{ text: 'Hola soy Nayra tu asistente virtual, te apoyaré con las dudas que tengas acerca del proceso de pasaportes y demás.', isUser: false }]);
+  const GREETING = 'Hola soy Nayra tu asistente virtual, te apoyaré con las dudas que tengas acerca del proceso de pasaportes y demás.';
+  const [messages, setMessages] = useState<Message[]>([{ text: GREETING, isUser: false }]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const BOTNAME = "Nayra";
 
   useEffect(() => {
     if (messages.length === 0) return;
-
     const lastMessage = messages[messages.length - 1];
-
     if (lastMessage?.isUser) {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
@@ -29,63 +24,46 @@ export default function Chatbot({ info }: { info: Info }) {
 
   const sendMessage = async () => {
     if (!input.trim()) return;
-
     const userMessage = { text: input, isUser: true };
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setLoading(true);
 
-    //const BASE_URL = "http://localhost:8000"
-    const NGROK = '/api/generate';
+
+    const NGROK = process.env.NEXT_PUBLIC_NGROK!;
 
     try {
-      const res = await fetch(NGROK, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: input }),
-      });
+      const res = await fetch(
+        "https://datasetperu.cognitiveservices.azure.com/language/:query-knowledgebases?projectName=NayraUSA&api-version=2021-10-01&deploymentName=production",
+        {
+          method: "POST",
+          headers: {
+            "Ocp-Apim-Subscription-Key": "9ARny4IYbVm3drJBuwZa60A9VGSoAzk6NIPJQsWNDStvaZ02m927JQQJ99BEACLArgHXJ3w3AAAaACOGZezL",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            top: 1,
+            question: input,
+            includeUnstructuredSources: true,
+            confidenceScoreThreshold: 0.3,
+            answerSpanRequest: {
+              enable: true,
+              topAnswersWithSpan: 1,
+              confidenceScoreThreshold: 0.3,
+            },
+          }),
+        }
+      );
 
-      if (!res.body) {
-        console.error("No se recibió un body en la respuesta.");
-        return;
-      }
+      const data = await res.json();
 
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-
-      const botMessage: Message = { text: "", isUser: false };
-
+      const answer = data.answers?.[0]?.answer || "Lo siento, no encontré información relacionada.";
+      const botMessage: Message = { text: answer, isUser: false };
       setMessages((prev) => [...prev, botMessage]);
 
-
-      while (true) {
-        const { value, done } = await reader.read();
-        if (done) break;
-
-        const chunk = decoder.decode(value, { stream: true });
-
-        const lines = chunk.split("\n").filter((line) => line.trim() !== "");
-        for (const line of lines) {
-          try {
-
-            const data = line;
-            if (data) {
-              setMessages((prev) => {
-                return prev.map((msg, index) => {
-                  if (index === prev.length - 1 && !msg.isUser) {
-                    return { ...msg, text: msg.text + data };
-                  }
-                  return msg;
-                });
-              });
-            }
-          } catch (err) {
-            console.error("Error procesando JSON:", err);
-          }
-        }
-      }
     } catch (error) {
       console.error("Error:", error);
+      setMessages((prev) => [...prev, { text: "Hubo un error al obtener respuesta.", isUser: false }]);
     } finally {
       setLoading(false);
     }
@@ -94,7 +72,6 @@ export default function Chatbot({ info }: { info: Info }) {
   return (
     <div className="flex flex-col h-full w-full shadow-lg rounded-lg overflow-hidden">
 
-      {/* Mensajes */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.map((msg, index) => (
           <div key={index} className={`flex ${msg.isUser ? "justify-end" : "justify-start"}`}>
@@ -104,7 +81,7 @@ export default function Chatbot({ info }: { info: Info }) {
                 : "bg-[#FED4D4] text-gray-900"
               }`}>
               <p className="font-semibold mb-1">
-                {msg.isUser ? `${info?.name} ${info?.lastname}` : "Nayra"}
+                {msg.isUser ? `${info?.name} ${info?.lastname}` : BOTNAME}
               </p>
               <p>{msg.text}</p>
             </div>
@@ -114,7 +91,7 @@ export default function Chatbot({ info }: { info: Info }) {
           <div className="flex justify-start">
             <div className="flex items-center space-x-2 text-gray-500">
               <Loader2 className="animate-spin h-5 w-5" />
-              <span>Escribiendo...</span>
+              <span>"Escribiendo..."</span>
             </div>
           </div>
         )}

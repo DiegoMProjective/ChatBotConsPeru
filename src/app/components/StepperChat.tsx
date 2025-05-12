@@ -4,8 +4,8 @@ import Chatbot from "./Chatbot";
 import { MessageSquareMore, Minus } from "lucide-react";
 
 export default function StepperChat() {
-  const [step, setStep] = useState(0); // 0: Minimizado, 1: Formulario, 2: Chat
-  const [isMinimized, setIsMinimized] = useState(true); // Controla minimizar/maximizar
+  const [step, setStep] = useState(0);
+  const [isMinimized, setIsMinimized] = useState(true);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -14,7 +14,7 @@ export default function StepperChat() {
 
   const handleNext = () => {
     if (formData.name && formData.email && formData.lastname) {
-      setStep(2); // Pasamos al chat
+      setStep(2);
     } else {
       alert("Por favor completa todos los campos.");
     }
@@ -26,7 +26,7 @@ export default function StepperChat() {
 
   const handleStart = () => {
     setIsMinimized(false);
-    setStep(1); // Abrir formulario al dar clic inicial
+    setStep(1);
   };
 
   return (
