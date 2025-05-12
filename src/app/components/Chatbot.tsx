@@ -3,7 +3,6 @@ import { useState, useRef, useEffect } from "react";
 import { Send, Loader2 } from "lucide-react";
 import { Message } from "../types/Message";
 import { Info } from "../types/info";
-import { PromptEnum } from "../enums/prompt-enum";
 
 export default function Chatbot({ info }: { info: Info }) {
   const GREETING = 'Hola soy Nayra tu asistente virtual, te apoyaré con las dudas que tengas acerca del proceso de pasaportes y demás.';
@@ -28,9 +27,6 @@ export default function Chatbot({ info }: { info: Info }) {
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setLoading(true);
-
-
-    const NGROK = process.env.NEXT_PUBLIC_NGROK!;
 
     try {
       const res = await fetch(
@@ -91,7 +87,7 @@ export default function Chatbot({ info }: { info: Info }) {
           <div className="flex justify-start">
             <div className="flex items-center space-x-2 text-gray-500">
               <Loader2 className="animate-spin h-5 w-5" />
-              <span>"Escribiendo..."</span>
+              <span>Escribiendo...</span>
             </div>
           </div>
         )}
